@@ -71,7 +71,7 @@ def get_colors():
 
 colors = get_colors()
 
-# Improved full-page theming for light/dark mode
+# Full light/dark theme fix for sidebar, text input, buttons, etc.
 st.markdown(
     f"""
     <style>
@@ -79,20 +79,38 @@ st.markdown(
             background-color: {colors['main_bg']};
             color: {colors['text']};
         }}
+
+        /* Sidebar */
         section[data-testid="stSidebar"] {{
-            background-color: {"#f0f0f5" if st.session_state.theme == "light" else "#262730"};
+            background-color: {"#f5f5f5" if st.session_state.theme == "light" else "#262730"};
             color: {colors['text']};
         }}
-        div[data-testid="stTextInput"] input {{
+
+        /* Input fields */
+        input[type="text"] {{
             background-color: {"#ffffff" if st.session_state.theme == "light" else "#1e1e1e"};
             color: {colors['text']};
             border: 1px solid #ccc;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
         }}
+
+        /* Form background */
         div[data-testid="stForm"] {{
-            background-color: {"#f9f9ff" if st.session_state.theme == "light" else "#1a1a2e"};
+            background-color: {"#f9f9f9" if st.session_state.theme == "light" else "#1a1a2e"};
             border-radius: 0.5rem;
             padding: 1rem;
         }}
+
+        /* Button styling */
+        button[kind="primary"] {{
+            background-color: {"#dbeafe" if st.session_state.theme == "light" else "#0e1117"};
+            color: {"#000000" if st.session_state.theme == "light" else "#ffffff"};
+            border-radius: 0.5rem;
+            border: none;
+        }}
+
+        /* Chat bubbles text contrast */
         .css-1y4p8pa, .css-1avcm0n {{
             color: {colors['text']};
         }}
@@ -100,6 +118,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
