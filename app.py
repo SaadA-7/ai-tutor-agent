@@ -78,15 +78,16 @@ st.markdown(
         .stApp {{
             background-color: {colors['main_bg']};
             color: {colors['text']};
+            font-family: 'Segoe UI', sans-serif;
         }}
 
         /* Sidebar */
         section[data-testid="stSidebar"] {{
-            background-color: {"#f5f5f5" if st.session_state.theme == "light" else "#262730"};
+            background-color: {"#f0f0f5" if st.session_state.theme == "light" else "#262730"};
             color: {colors['text']};
         }}
 
-        /* Input fields */
+        /* Input */
         input[type="text"] {{
             background-color: {"#ffffff" if st.session_state.theme == "light" else "#1e1e1e"};
             color: {colors['text']};
@@ -95,22 +96,30 @@ st.markdown(
             border-radius: 0.5rem;
         }}
 
-        /* Form background */
+        /* Form container */
         div[data-testid="stForm"] {{
             background-color: {"#f9f9f9" if st.session_state.theme == "light" else "#1a1a2e"};
             border-radius: 0.5rem;
             padding: 1rem;
         }}
 
-        /* Button styling */
-        button[kind="primary"] {{
-            background-color: {"#dbeafe" if st.session_state.theme == "light" else "#0e1117"};
+        /* Buttons */
+        button.css-19rxjzo, button.css-1cpxqw2, button[title="Submit"] {{
+            background-color: {"#dbeafe" if st.session_state.theme == "light" else "#1e1e2e"};
             color: {"#000000" if st.session_state.theme == "light" else "#ffffff"};
             border-radius: 0.5rem;
+            padding: 0.5rem 1.2rem;
             border: none;
+            font-weight: bold;
+            transition: all 0.2s ease-in-out;
         }}
 
-        /* Chat bubbles text contrast */
+        button.css-19rxjzo:hover, button.css-1cpxqw2:hover, button[title="Submit"]:hover {{
+            background-color: {"#bfdbfe" if st.session_state.theme == "light" else "#2e2e40"};
+            transform: scale(1.03);
+        }}
+
+        /* Chat bubbles */
         .css-1y4p8pa, .css-1avcm0n {{
             color: {colors['text']};
         }}
@@ -118,6 +127,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
