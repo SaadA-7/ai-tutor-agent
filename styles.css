@@ -1,45 +1,75 @@
 /* Global font */
 .stApp {
   font-family: 'Segoe UI', sans-serif;
+  background-color: var(--main-bg);
+  color: var(--main-text);
 }
 
 /* Sidebar background */
 section[data-testid="stSidebar"] {
-  background-color: #f4f4f8 !important;
+  background-color: var(--sidebar-bg) !important;
+  color: var(--main-text);
 }
 
 /* Theme selector text fix */
 .css-1offfwp, .css-17zi8at, .css-1kyxreq {
-  color: #333333 !important;
+  color: var(--theme-toggle-text) !important;
 }
 
 /* Input fields */
 input[type="text"] {
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
+  background-color: var(--input-bg);
+  color: var(--main-text);
   border: 1px solid #ccc;
-  color: #000000;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 /* Form container background */
 div[data-testid="stForm"] {
-  background-color: #f9f9f9;
+  background-color: var(--form-bg);
   border-radius: 0.5rem;
   padding: 1rem;
 }
 
 /* Ask / Submit button */
 button {
-  background-color: #dbeafe !important;
-  color: #000000 !important;
+  background-color: var(--button-bg) !important;
+  color: var(--button-text) !important;
   border-radius: 0.5rem !important;
   font-weight: bold !important;
   padding: 0.4rem 1rem !important;
   border: none !important;
+  transition: all 0.2s ease-in-out;
 }
 
 button:hover {
-  background-color: #bfdbfe !important;
+  background-color: var(--button-hover) !important;
   transform: scale(1.05);
+}
+
+/* Theme variables */
+/* use root for light mode, and body[]...for dark */
+:root {
+  --main-bg: #ffffff;
+  --sidebar-bg: #f4f4f8;
+  --main-text: #000000;
+  --input-bg: #ffffff;
+  --form-bg: #f9f9f9;
+  --button-bg: #dbeafe;
+  --button-hover: #bfdbfe;
+  --button-text: #000000;
+  --theme-toggle-text: #333333;
+}
+
+body[data-theme='dark'] {
+  --main-bg: #0e1117;
+  --sidebar-bg: #262730;
+  --main-text: #ffffff;
+  --input-bg: #1e1e1e;
+  --form-bg: #1a1a2e;
+  --button-bg: #1e3a8a;
+  --button-hover: #2563eb;
+  --button-text: #ffffff;
+  --theme-toggle-text: #bbbbbb;
 }
