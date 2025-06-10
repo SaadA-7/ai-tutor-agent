@@ -71,64 +71,10 @@ def get_colors():
 
 colors = get_colors()
 
-# Full light/dark theme fix for sidebar, text input, buttons, etc.
-st.markdown(
-    f"""
-    <style>
-        .stApp {{
-            background-color: {colors['main_bg']};
-            color: {colors['text']};
-            font-family: 'Segoe UI', sans-serif;
-        }}
 
-        /* Sidebar */
-        section[data-testid="stSidebar"] {{
-            background-color: {"#f0f0f5" if st.session_state.theme == "light" else "#262730"};
-            color: {colors['text']};
-        }}
-
-        /* Input */
-        input[type="text"] {{
-            background-color: {"#ffffff" if st.session_state.theme == "light" else "#1e1e1e"};
-            color: {colors['text']};
-            border: 1px solid #ccc;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }}
-
-        /* Form container */
-        div[data-testid="stForm"] {{
-            background-color: {"#f9f9f9" if st.session_state.theme == "light" else "#1a1a2e"};
-            border-radius: 0.5rem;
-            padding: 1rem;
-        }}
-
-        /* Buttons */
-        button.css-19rxjzo, button.css-1cpxqw2, button[title="Submit"] {{
-            background-color: {"#dbeafe" if st.session_state.theme == "light" else "#1e1e2e"};
-            color: {"#000000" if st.session_state.theme == "light" else "#ffffff"};
-            border-radius: 0.5rem;
-            padding: 0.5rem 1.2rem;
-            border: none;
-            font-weight: bold;
-            transition: all 0.2s ease-in-out;
-        }}
-
-        button.css-19rxjzo:hover, button.css-1cpxqw2:hover, button[title="Submit"]:hover {{
-            background-color: {"#bfdbfe" if st.session_state.theme == "light" else "#2e2e40"};
-            transform: scale(1.03);
-        }}
-
-        /* Chat bubbles */
-        .css-1y4p8pa, .css-1avcm0n {{
-            color: {colors['text']};
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
+# Load external CSS
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 

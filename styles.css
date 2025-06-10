@@ -1,0 +1,45 @@
+/* Global font */
+.stApp {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar background */
+section[data-testid="stSidebar"] {
+  background-color: #f4f4f8 !important;
+}
+
+/* Theme selector text fix */
+.css-1offfwp, .css-17zi8at, .css-1kyxreq {
+  color: #333333 !important;
+}
+
+/* Input fields */
+input[type="text"] {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  color: #000000;
+}
+
+/* Form container background */
+div[data-testid="stForm"] {
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+/* Ask / Submit button */
+button {
+  background-color: #dbeafe !important;
+  color: #000000 !important;
+  border-radius: 0.5rem !important;
+  font-weight: bold !important;
+  padding: 0.4rem 1rem !important;
+  border: none !important;
+}
+
+button:hover {
+  background-color: #bfdbfe !important;
+  transform: scale(1.05);
+}
