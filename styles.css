@@ -50,7 +50,7 @@ button:hover {
 
 
 /* Light Mode */
-.stApp[data-theme='light'] {
+.stApp.theme-light {
   --main-bg: #ffffff;
   --sidebar-bg: #f4f4f8;
   --main-text: #000000;
@@ -63,7 +63,7 @@ button:hover {
 }
 
 /* Dark Mode */
-.stApp[data-theme='dark'] {
+.stApp.theme-dark {
   --main-bg: #0e1117;
   --sidebar-bg: #262730;
   --main-text: #ffffff;

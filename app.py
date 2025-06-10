@@ -72,13 +72,14 @@ def get_colors():
 colors = get_colors()
 
 theme_class = "dark" if st.session_state.theme == "dark" else "light"
-theme_mode = "dark" if st.session_state.theme == "dark" else "light"
+theme_mode = "theme-dark" if st.session_state.theme == "dark" else "theme-light"
 st.markdown(
     f"""
     <script>
         const app = window.parent.document.querySelector('.stApp');
         if (app) {{
-            app.setAttribute('data-theme', '{theme_mode}');
+            app.classList.remove('theme-light', 'theme-dark');
+            app.classList.add('{theme_mode}');
         }}
     </script>
     """,
