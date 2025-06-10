@@ -71,7 +71,7 @@ def get_colors():
 
 colors = get_colors()
 
-# Inject full page styling
+# Improved full-page theming for light/dark mode
 st.markdown(
     f"""
     <style>
@@ -79,10 +79,28 @@ st.markdown(
             background-color: {colors['main_bg']};
             color: {colors['text']};
         }}
+        section[data-testid="stSidebar"] {{
+            background-color: {"#f0f0f5" if st.session_state.theme == "light" else "#262730"};
+            color: {colors['text']};
+        }}
+        div[data-testid="stTextInput"] input {{
+            background-color: {"#ffffff" if st.session_state.theme == "light" else "#1e1e1e"};
+            color: {colors['text']};
+            border: 1px solid #ccc;
+        }}
+        div[data-testid="stForm"] {{
+            background-color: {"#f9f9ff" if st.session_state.theme == "light" else "#1a1a2e"};
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }}
+        .css-1y4p8pa, .css-1avcm0n {{
+            color: {colors['text']};
+        }}
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 
 
