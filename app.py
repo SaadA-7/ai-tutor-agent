@@ -71,6 +71,10 @@ def get_colors():
 
 colors = get_colors()
 
+theme_class = "dark" if st.session_state.theme == "dark" else "light"
+theme_class = "theme-dark" if st.session_state.theme == "dark" else "theme-light"
+st.markdown(f"<div class='{theme_class}'>", unsafe_allow_html=True)
+
 
 # Load external CSS
 with open("styles.css") as f:

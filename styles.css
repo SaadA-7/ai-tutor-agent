@@ -48,9 +48,8 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Theme variables */
-/* use root for light mode, and body[]...for dark */
-:root {
+/* Default theme variables (light) */
+.theme-light {
   --main-bg: #ffffff;
   --sidebar-bg: #f4f4f8;
   --main-text: #000000;
@@ -62,7 +61,7 @@ button:hover {
   --theme-toggle-text: #333333;
 }
 
-body[data-theme='dark'] {
+.theme-dark {
   --main-bg: #0e1117;
   --sidebar-bg: #262730;
   --main-text: #ffffff;
@@ -73,3 +72,4 @@ body[data-theme='dark'] {
   --button-text: #ffffff;
   --theme-toggle-text: #bbbbbb;
 }
+
