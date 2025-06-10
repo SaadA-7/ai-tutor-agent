@@ -48,8 +48,9 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Default theme variables (light) */
-.theme-light {
+
+/* Light Mode */
+.stApp[data-theme='light'] {
   --main-bg: #ffffff;
   --sidebar-bg: #f4f4f8;
   --main-text: #000000;
@@ -61,7 +62,8 @@ button:hover {
   --theme-toggle-text: #333333;
 }
 
-.theme-dark {
+/* Dark Mode */
+.stApp[data-theme='dark'] {
   --main-bg: #0e1117;
   --sidebar-bg: #262730;
   --main-text: #ffffff;
@@ -72,4 +74,5 @@ button:hover {
   --button-text: #ffffff;
   --theme-toggle-text: #bbbbbb;
 }
+
 
