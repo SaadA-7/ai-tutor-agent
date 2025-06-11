@@ -106,7 +106,7 @@ if selected == "Q&A":
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
     # Apply custom colors
-    for msg in st.session_state.messages:
+for msg in st.session_state.messages:
     if msg["role"] == "user":
         st.markdown(
             f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>",
@@ -118,18 +118,6 @@ if selected == "Q&A":
             unsafe_allow_html=True
         )
 
-
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            st.markdown(
-                f"<div style='background:{user_bg};padding:10px;border-radius:10px;margin-bottom:5px;'><b style='color:{user_text};'>You:</b> {msg['content']}</div>",
-                unsafe_allow_html=True
-            )
-        else:
-            st.markdown(
-                f"<div style='background:{tutor_bg};padding:10px;border-radius:10px;margin-bottom:10px;'><b style='color:{tutor_text};'>Tutor:</b> {msg['content']}</div>",
-                unsafe_allow_html=True
-            )
 
 # ---------------- QUIZ MODE ----------------
 elif selected == "Quiz Mode":
