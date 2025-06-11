@@ -1,6 +1,6 @@
 /* Global font */
 .stApp {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Roboto, 'Segoe UI', sans-serif;
   background-color: var(--main-bg);
   color: var(--main-text);
 }
