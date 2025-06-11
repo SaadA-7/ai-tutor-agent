@@ -1,18 +1,21 @@
-/* Global font */
+/* Global font and app layout */
 .stApp {
   font-family: Roboto, 'Segoe UI', sans-serif;
   background-color: var(--main-bg);
   color: var(--main-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Sidebar background */
 section[data-testid="stSidebar"] {
   background-color: var(--sidebar-bg) !important;
   color: var(--main-text);
+  transition: background-color 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Theme selector text fix */
-.css-1offfwp, .css-17zi8at, .css-1kyxreq {
+div[data-baseweb="radio"] label {
   color: var(--theme-toggle-text) !important;
 }
 
@@ -23,6 +26,7 @@ input[type="text"] {
   border: 1px solid #ccc;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Form container background */
@@ -30,6 +34,7 @@ div[data-testid="stForm"] {
   background-color: var(--form-bg);
   border-radius: 0.5rem;
   padding: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 /* Ask / Submit button */
@@ -39,7 +44,7 @@ button {
   border-radius: 0.5rem !important;
   font-weight: bold !important;
   padding: 0.4rem 1rem !important;
-  border-style:  solid;
+  border-style: solid;
   border-color: #ccc;
   border-width: 1px;
   transition: all 0.2s ease-in-out;
@@ -50,8 +55,24 @@ button:hover {
   transform: scale(1.05);
 }
 
+/* User and Tutor bubbles */
+.user-bubble {
+  background-color: var(--user-bg);
+  color: var(--user-text);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
 
-/* Light Mode */
+.tutor-bubble {
+  background-color: var(--tutor-bg);
+  color: var(--tutor-text);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Light Theme */
 .stApp.theme-light {
   --main-bg: #ffffff;
   --sidebar-bg: #f4f4f8;
@@ -62,9 +83,13 @@ button:hover {
   --button-hover: #bfdbfe;
   --button-text: #000000;
   --theme-toggle-text: #333333;
+  --user-bg: #e6f0ff;
+  --user-text: #003366;
+  --tutor-bg: #e8f5e9;
+  --tutor-text: #2e7d32;
 }
 
-/* Dark Mode */
+/* Dark Theme */
 .stApp.theme-dark {
   --main-bg: #0e1117;
   --sidebar-bg: #262730;
@@ -75,6 +100,8 @@ button:hover {
   --button-hover: #2563eb;
   --button-text: #ffffff;
   --theme-toggle-text: #bbbbbb;
+  --user-bg: #1f1f2e;
+  --user-text: #99ccff;
+  --tutor-bg: #2d3b3b;
+  --tutor-text: #b2f0b2;
 }
-
-

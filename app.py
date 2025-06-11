@@ -48,28 +48,7 @@ with st.sidebar:
     theme_choice = st.radio("Choose theme:", ["dark", "light"], index=0 if st.session_state.theme == "dark" else 1)
     st.session_state.theme = theme_choice
 
-# Theme styling map
-def get_colors():
-    if st.session_state.theme == "dark":
-        return {
-            "user_bg": "#1f1f2e",
-            "user_text": "#99ccff",
-            "tutor_bg": "#2d3b3b",
-            "tutor_text": "#b2f0b2",
-            "main_bg": "#0e1117",
-            "text": "#ffffff"
-        }
-    else:
-        return {
-            "user_bg": "#e6f0ff",
-            "user_text": "#003366",
-            "tutor_bg": "#e8f5e9",
-            "tutor_text": "#2e7d32",
-            "main_bg": "#ffffff",
-            "text": "#000000"
-        }
 
-colors = get_colors()
 
 theme_class = "dark" if st.session_state.theme == "dark" else "light"
 theme_mode = "theme-dark" if st.session_state.theme == "dark" else "theme-light"
@@ -127,10 +106,18 @@ if selected == "Q&A":
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
     # Apply custom colors
-    user_bg = colors["user_bg"]
-    user_text = colors["user_text"]
-    tutor_bg = colors["tutor_bg"]
-    tutor_text = colors["tutor_text"]
+    for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        st.markdown(
+            f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>",
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            f"<div class='tutor-bubble'><b>Tutor:</b> {msg['content']}</div>",
+            unsafe_allow_html=True
+        )
+
 
     for msg in st.session_state.messages:
         if msg["role"] == "user":
