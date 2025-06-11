@@ -39,7 +39,9 @@ button {
   border-radius: 0.5rem !important;
   font-weight: bold !important;
   padding: 0.4rem 1rem !important;
-  border: none !important;
+  border-style:  solid;
+  border-color: #ccc;
+  border-width: 1px;
   transition: all 0.2s ease-in-out;
 }
 
