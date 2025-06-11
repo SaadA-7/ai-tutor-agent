@@ -1,107 +1,530 @@
-/* Global font and app layout */
+/* ============================================================================
+   ENHANCED AI TUTOR STYLES - COMPREHENSIVE THEME SYSTEM
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   GLOBAL APPLICATION STYLES
+   ---------------------------------------------------------------------------- */
+
 .stApp {
-  font-family: Roboto, 'Segoe UI', sans-serif;
-  background-color: var(--main-bg);
-  color: var(--main-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    line-height: 1.6;
 }
 
-/* Sidebar background */
+/* Remove default margins and improve typography */
+.stApp h1, .stApp h2, .stApp h3 {
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+}
+
+.stApp p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+/* ----------------------------------------------------------------------------
+   SIDEBAR STYLING
+   ---------------------------------------------------------------------------- */
+
+/* Main sidebar container */
 section[data-testid="stSidebar"] {
-  background-color: var(--sidebar-bg) !important;
-  color: var(--main-text);
-  transition: background-color 0.3s ease;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 12px var(--shadow-color);
+    transition: all 0.3s ease;
 }
 
-/* Theme selector text fix */
+/* Sidebar content */
+section[data-testid="stSidebar"] > div {
+    background-color: var(--sidebar-bg) !important;
+    color: var(--text-primary) !important;
+    padding-top: 2rem;
+}
+
+/* Sidebar headers */
+section[data-testid="stSidebar"] h3 {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+/* Theme selector styling */
 div[data-baseweb="radio"] label {
-  color: var(--theme-toggle-text) !important;
+    color: var(--text-primary) !important;
+    font-weight: 500;
 }
 
-/* Input fields */
-input[type="text"] {
-  background-color: var(--input-bg);
-  color: var(--main-text);
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+div[data-baseweb="radio"] {
+    background-color: var(--secondary-bg);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
 }
 
-/* Form container background */
+/* ----------------------------------------------------------------------------
+   FORM AND INPUT ELEMENTS
+   ---------------------------------------------------------------------------- */
+
+/* Text input fields */
+input[type="text"], textarea {
+    background-color: var(--input-bg) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--input-border) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    outline: none !important;
+}
+
+/* Form containers */
 div[data-testid="stForm"] {
-  background-color: var(--form-bg);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  transition: background-color 0.3s ease;
+    background-color: var(--form-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1rem !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: all 0.3s ease;
 }
 
-/* Ask / Submit button */
+/* Form labels */
+div[data-testid="stForm"] label {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* ----------------------------------------------------------------------------
+   BUTTON STYLING
+   ---------------------------------------------------------------------------- */
+
+/* Primary buttons */
 button {
-  background-color: var(--button-bg) !important;
-  color: var(--button-text) !important;
-  border-radius: 0.5rem !important;
-  font-weight: bold !important;
-  padding: 0.4rem 1rem !important;
-  border-style: solid;
-  border-color: #ccc;
-  border-width: 1px;
-  transition: all 0.2s ease-in-out;
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border: none !important;
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    text-transform: none !important;
 }
 
 button:hover {
-  background-color: var(--button-hover) !important;
-  transform: scale(1.05);
+    background-color: var(--button-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-color);
 }
 
-/* User and Tutor bubbles */
-.user-bubble {
-  background-color: var(--user-bg);
-  color: var(--user-text);
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 5px;
+button:active {
+    transform: translateY(0);
 }
 
-.tutor-bubble {
-  background-color: var(--tutor-bg);
-  color: var(--tutor-text);
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
+/* Secondary buttons (Reset, etc.) */
+button[kind="secondary"] {
+    background-color: var(--secondary-bg) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-color) !important;
 }
 
-/* Light Theme */
-.stApp.theme-light {
-  --main-bg: #ffffff;
-  --sidebar-bg: #f4f4f8;
-  --main-text: #000000;
-  --input-bg: #ffffff;
-  --form-bg: #f9f9f9;
-  --button-bg: #dbeafe;
-  --button-hover: #bfdbfe;
-  --button-text: #000000;
-  --theme-toggle-text: #333333;
-  --user-bg: #e6f0ff;
-  --user-text: #003366;
-  --tutor-bg: #e8f5e9;
-  --tutor-text: #2e7d32;
+button[kind="secondary"]:hover {
+    background-color: var(--accent-color) !important;
+    color: var(--button-text) !important;
 }
 
-/* Dark Theme */
-.stApp.theme-dark {
-  --main-bg: #0e1117;
-  --sidebar-bg: #262730;
-  --main-text: #ffffff;
-  --input-bg: #1e1e1e;
-  --form-bg: #1a1a2e;
-  --button-bg: #1e3a8a;
-  --button-hover: #2563eb;
-  --button-text: #ffffff;
-  --theme-toggle-text: #bbbbbb;
-  --user-bg: #1f1f2e;
-  --user-text: #99ccff;
-  --tutor-bg: #2d3b3b;
-  --tutor-text: #b2f0b2;
+/* ----------------------------------------------------------------------------
+   CUSTOM COMPONENT STYLES
+   ---------------------------------------------------------------------------- */
+
+/* Page headers */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    border-radius: 1rem;
+    color: white;
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+/* Message bubbles for chat */
+.user-message-bubble {
+    background: linear-gradient(135deg, var(--user-bubble-bg), var(--accent-color));
+    color: var(--user-bubble-text);
+    padding: 1rem 1.25rem;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+    margin: 0.75rem 0 0.75rem auto;
+    max-width: 80%;
+    box-shadow: 0 3px 12px var(--shadow-color);
+    border-left: 4px solid var(--accent-color);
+}
+
+.tutor-message-bubble {
+    background: linear-gradient(135deg, var(--tutor-bubble-bg), var(--success-color));
+    color: var(--tutor-bubble-text);
+    padding: 1rem 1.25rem;
+    border-radius: 1rem 1rem 1rem 0.25rem;
+    margin: 0.75rem auto 0.75rem 0;
+    max-width: 80%;
+    box-shadow: 0 3px 12px var(--shadow-color);
+    border-left: 4px solid var(--success-color);
+}
+
+.user-message-bubble strong,
+.tutor-message-bubble strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Quiz question container */
+.quiz-question-container {
+    background-color: var(--secondary-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+.quiz-question-container h3 {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Flashcard styling */
+.flashcard-container {
+    perspective: 1000px;
+    margin: 1.5rem 0;
+}
+
+.flashcard-question,
+.flashcard-answer {
+    background: linear-gradient(135deg, var(--secondary-bg), var(--form-bg));
+    border: 2px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: 0 6px 20px var(--shadow-color);
+    transition: transform 0.3s ease;
+}
+
+.flashcard-question:hover,
+.flashcard-answer:hover {
+    transform: translateY(-4px);
+}
+
+.flashcard-question h3,
+.flashcard-answer h3 {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.flashcard-question p,
+.flashcard-answer p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 0;
+}
+
+/* Score display */
+.score-display {
+    background: linear-gradient(135deg, var(--secondary-bg), var(--form-bg));
+    border: 2px solid var(--success-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    margin: 1.5rem 0;
+}
+
+.score-display h3 {
+    color: var(--success-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.score-display p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+/* ----------------------------------------------------------------------------
+   RADIO BUTTON STYLING
+   ---------------------------------------------------------------------------- */
+
+/* Radio button containers */
+div[role="radiogroup"] {
+    background-color: var(--secondary-bg);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Individual radio options */
+div[role="radiogroup"] label {
+    background-color: var(--form-bg) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.25rem 0 !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    display: block !important;
+}
+
+div[role="radiogroup"] label:hover {
+    border-color: var(--accent-color) !important;
+    background-color: var(--accent-color) !important;
+    color: var(--button-text) !important;
+    transform: scale(1.02);
+}
+
+/* Selected radio option */
+div[role="radiogroup"] label[data-checked="true"] {
+    background-color: var(--accent-color) !important;
+    color: var(--button-text) !important;
+    border-color: var(--accent-color) !important;
+    font-weight: 600 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   SUCCESS/ERROR MESSAGE STYLING
+   ---------------------------------------------------------------------------- */
+
+/* Success messages */
+div[data-testid="stSuccess"] {
+    background-color: var(--success-color) !important;
+    color: white !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Error messages */
+div[data-testid="stError"] {
+    background-color: var(--error-color) !important;
+    color: white !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Info messages */
+div[data-testid="stInfo"] {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Warning messages */
+div[data-testid="stWarning"] {
+    background-color: var(--warning-color) !important;
+    color: white !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* ----------------------------------------------------------------------------
+   LOADING SPINNER STYLING
+   ---------------------------------------------------------------------------- */
+
+div[data-testid="stSpinner"] {
+    background-color: var(--secondary-bg) !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   RESPONSIVE DESIGN
+   ---------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .page-header p {
+        font-size: 1rem;
+    }
+    
+    .user-message-bubble,
+    .tutor-message-bubble {
+        max-width: 95%;
+        padding: 0.75rem 1rem;
+    }
+    
+    .quiz-question-container,
+    .flashcard-question,
+    .flashcard-answer {
+        padding: 1rem;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   DARK MODE ENHANCEMENTS
+   ---------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+    .stApp {
+        /* Enhanced dark mode support for system preferences */
+        --primary-bg: #0f172a;
+        --secondary-bg: #1e293b;
+        --sidebar-bg: #334155;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --accent-color: #60a5fa;
+        --accent-hover: #3b82f6;
+        --input-bg: #1e293b;
+        --input-border: #475569;
+        --form-bg: #1e293b;
+        --button-bg: #3b82f6;
+        --button-hover: #2563eb;
+        --button-text: #ffffff;
+        --user-bubble-bg: #1e40af;
+        --user-bubble-text: #dbeafe;
+        --tutor-bubble-bg: #166534;
+        --tutor-bubble-text: #dcfce7;
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+        --border-color: #475569;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   ACCESSIBILITY IMPROVEMENTS
+   ---------------------------------------------------------------------------- */
+
+/* Focus indicators */
+*:focus {
+    outline: 2px solid var(--accent-color) !important;
+    outline-offset: 2px !important;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .stApp {
+        --border-color: #000000;
+        --shadow-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    button {
+        border: 2px solid var(--text-primary) !important;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   ANIMATION ENHANCEMENTS
+   ---------------------------------------------------------------------------- */
+
+/* Smooth page transitions */
+.stApp > div {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Button click animation */
+button:active {
+    animation: buttonPress 0.1s ease-in-out;
+}
+
+@keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+/* Message bubble slide-in animation */
+.user-message-bubble {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.tutor-message-bubble {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
