@@ -18,7 +18,7 @@ st.set_page_config(page_title="AI Tutor", layout="centered")
 
 # Sidebar navigation
 with st.sidebar:
-    st.markdown("### 👤 User Login")
+    st.markdown("### \U0001F464 User Login")
 
     username = st.text_input("Enter your name to start:", value=st.session_state.get("username", ""))
     if username:
@@ -26,7 +26,7 @@ with st.sidebar:
 
     name = st.session_state.get("username", "Student")
 
-    if st.button("🔄 Reset Progress"):
+    if st.button("\U0001F504 Reset Progress"):
         for key in [
             "messages", "quiz_score", "flashcard_score",
             "current_quiz", "current_flashcard", "show_answer"
@@ -38,19 +38,17 @@ with st.sidebar:
     st.markdown("---")
 
     selected = option_menu(
-        menu_title="📘 AI Tutor Modes",
+        menu_title="\U0001F4D8 AI Tutor Modes",
         options=["Q&A", "Quiz Mode", "Flashcards"],
         icons=["chat", "check2-circle", "journal-text"],
         default_index=0
     )
 
-    st.markdown("**🎨 Theme**")
+    st.markdown("**\U0001F3A8 Theme**")
     theme_choice = st.radio("Choose theme:", ["dark", "light"], index=0 if st.session_state.theme == "dark" else 1)
     st.session_state.theme = theme_choice
 
-
-
-theme_class = "dark" if st.session_state.theme == "dark" else "light"
+# Inject dynamic theme class into stApp
 theme_mode = "theme-dark" if st.session_state.theme == "dark" else "theme-light"
 st.markdown(
     f"""
@@ -65,15 +63,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # Load external CSS
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-
-
-
-
 
 # Shared session state
 if "messages" not in st.session_state:
@@ -84,12 +76,12 @@ if "quiz_score" not in st.session_state:
 
 # ---------------- Q&A MODE ----------------
 if selected == "Q&A":
-    st.markdown(f"<h1 style='text-align: center;'>📘 Q&A Tutor for {name}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align: center;'>\U0001F4D8 Q&A Tutor for {name}</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Ask anything academic, get an explanation.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     with st.form(key="chat_form"):
-        user_input = st.text_input("💬 Your Question", placeholder="e.g., What is a linked list?")
+        user_input = st.text_input("\U0001F4AC Your Question", placeholder="e.g., What is a linked list?")
         submit = st.form_submit_button("Ask")
 
     if submit and user_input:
@@ -105,30 +97,28 @@ if selected == "Q&A":
             answer = response.content[0].text
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
-    # Apply custom colors
-for msg in st.session_state.messages:
-    if msg["role"] == "user":
-        st.markdown(
-            f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>",
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            f"<div class='tutor-bubble'><b>Tutor:</b> {msg['content']}</div>",
-            unsafe_allow_html=True
-        )
-
+    for msg in st.session_state.messages:
+        if msg["role"] == "user":
+            st.markdown(
+                f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>",
+                unsafe_allow_html=True
+            )
+        else:
+            st.markdown(
+                f"<div class='tutor-bubble'><b>Tutor:</b> {msg['content']}</div>",
+                unsafe_allow_html=True
+            )
 
 # ---------------- QUIZ MODE ----------------
 elif selected == "Quiz Mode":
-    st.markdown(f"<h1 style='text-align: center;'>🧠 Quiz Mode for {name}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align: center;'>\U0001F9E0 Quiz Mode for {name}</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Test your knowledge with multiple choice questions!</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     if "current_quiz" not in st.session_state:
         st.session_state.current_quiz = None
 
-    if st.button("🎲 Generate New Question"):
+    if st.button("\U0001F3B2 Generate New Question"):
         prompt = (
             "Create a multiple choice quiz question on a general computer science topic. "
             "Format it as:\n\n"
@@ -169,25 +159,23 @@ elif selected == "Quiz Mode":
             if st.button("Submit Answer"):
                 st.session_state.quiz_score["total"] += 1
                 if user_answer == correct:
-                    st.success("✅ Correct!")
+                    st.success("\u2705 Correct!")
                     st.session_state.quiz_score["correct"] += 1
                 else:
-                    st.error(f"❌ Incorrect. The correct answer was {correct}. {options[correct]}")
+                    st.error(f"\u274C Incorrect. The correct answer was {correct}. {options[correct]}")
         except Exception as e:
-            st.error("⚠️ Failed to parse the quiz question. Try again.")
+            st.error("\u26A0\uFE0F Failed to parse the quiz question. Try again.")
             st.session_state.current_quiz = None
 
     st.markdown("---")
     st.markdown(f"**Score:** {st.session_state.quiz_score['correct']} / {st.session_state.quiz_score['total']}")
 
-
-    # ---------------- FLASHCARD MODE ----------------
+# ---------------- FLASHCARD MODE ----------------
 elif selected == "Flashcards":
-    st.markdown(f"<h1 style='text-align: center;'>🃏 Flashcard Mode for {name}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align: center;'>\U0001F0CF Flashcard Mode for {name}</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Flip through key concepts and test your memory.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Init state
     if "current_flashcard" not in st.session_state:
         st.session_state.current_flashcard = None
     if "show_answer" not in st.session_state:
@@ -195,8 +183,7 @@ elif selected == "Flashcards":
     if "flashcard_score" not in st.session_state:
         st.session_state.flashcard_score = {"got_it": 0, "missed": 0}
 
-    # Generate new flashcard
-    if st.button("🔄 New Flashcard"):
+    if st.button("\U0001F504 New Flashcard"):
         prompt = (
             "Create a flashcard for a computer science student. Format it as:\n"
             "**Question:** <question text>\n**Answer:** <answer text>"
@@ -216,20 +203,20 @@ elif selected == "Flashcards":
         q_text = lines[0].replace("**Question:**", "").strip()
         a_text = lines[1].replace("**Answer:**", "").strip()
 
-        st.markdown(f"📘 **Question:** {q_text}")
+        st.markdown(f"\U0001F4D8 **Question:** {q_text}")
 
         if not st.session_state.show_answer:
-            if st.button("👁️ Show Answer"):
+            if st.button("\U0001F441\uFE0F Show Answer"):
                 st.session_state.show_answer = True
         else:
-            st.markdown(f"✅ **Answer:** {a_text}")
+            st.markdown(f"\u2705 **Answer:** {a_text}")
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("✅ Got it"):
+                if st.button("\u2705 Got it"):
                     st.session_state.flashcard_score["got_it"] += 1
                     st.session_state.current_flashcard = None
             with col2:
-                if st.button("❌ Missed it"):
+                if st.button("\u274C Missed it"):
                     st.session_state.flashcard_score["missed"] += 1
                     st.session_state.current_flashcard = None
 
