@@ -292,28 +292,29 @@ if selected_mode == "Q&A Chat":
         # Generate AI response with topic-injected context
         with st.spinner("🤔 Tutor is thinking..."):
             try:
-        topic_context = f"You are a tutor helping with the subject: {st.session_state.selected_topic}."
-        messages = [
-            {"role": "system", "content": topic_context}
-        ] + [
-            {"role": msg["role"], "content": msg["content"]}
-            for msg in st.session_state.messages
-        ]
-        ai_response = client.messages.create(
-            model="claude-3-haiku-20240307",
-            max_tokens=750,
-            temperature=0.6,
-            messages=messages
-        )
-        
-        tutor_answer = ai_response.content[0].text
-        st.session_state.messages.append({
-            "role": "assistant", 
-            "content": tutor_answer
-        })
-        
-    except Exception as e:
-        st.error(f"❌ Error generating response: {str(e)}")
+                topic_context = f"You are a tutor helping with the subject: {st.session_state.selected_topic}."
+                messages = [
+                    {"role": "system", "content": topic_context}
+                ] + [
+                    {"role": msg["role"], "content": msg["content"]}
+                    for msg in st.session_state.messages
+                ]
+                ai_response = client.messages.create(
+                    model="claude-3-haiku-20240307",
+                    max_tokens=750,
+                    temperature=0.6,
+                    messages=messages
+                )
+
+                tutor_answer = ai_response.content[0].text
+                st.session_state.messages.append({
+                    "role": "assistant", 
+                    "content": tutor_answer
+                })
+
+            except Exception as e:
+                st.error(f"❌ Error generating response: {str(e)}")
+
 
 
     # Display conversation history
