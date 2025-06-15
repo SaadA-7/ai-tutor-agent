@@ -57,31 +57,30 @@ def get_theme_variables(theme):
     """Return CSS variables for the specified theme"""
     if theme == "light":
         return """
-            --primary-bg: #ffffff;
-            --secondary-bg: #f8fafc;
-            --sidebar-bg: #f1f5f9;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --accent-color: #6366f1;
-            --accent-hover: #4f46e5;
-            --accent-light: #a5b4fc;
-            --warm-accent: #f59e0b;
-            --success-accent: #10b981;
-            --input-bg: #ffffff;
-            --input-border: #e2e8f0;
-            --form-bg: #f8fafc;
-            --button-bg: #6366f1;
-            --button-hover: #4f46e5;
-            --button-text: #ffffff;
-            --user-bubble-bg: #ddd6fe;
-            --user-bubble-text: #5b21b6;
-            --tutor-bubble-bg: #d1fae5;
-            --tutor-bubble-text: #065f46;
-            --success-color: #10b981;
-            --error-color: #ef4444;
-            --warning-color: #f59e0b;
-            --border-color: #e2e8f0;
-            --shadow-color: rgba(0, 0, 0, 0.1);
+        --primary-bg: #DFD0B8;
+        --secondary-bg: #f5f0e6;
+        --sidebar-bg: #f3ede2;
+        --text-primary: #222831;
+        --text-secondary: #393E46;
+        --accent-color: #7c3aed;
+        --accent-hover: #6d28d9;
+        --accent-light: #a78bfa;
+        --warm-accent: #f59e0b;
+        --success-accent: #10b981;
+        --input-bg: #ffffff;
+        --input-border: #cfc6b5;
+        --form-bg: #fdfaf6;
+        --button-bg: #7c3aed;
+        --button-hover: #6d28d9;
+        --button-text: #ffffff;
+        --user-bubble-bg: #ddd6fe;
+        --user-bubble-text: #393E46;
+        --tutor-bubble-bg: #d1fae5;
+        --tutor-bubble-text: #065f46;
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+        --border-color: #e0d7c7;
         """
     else:  # dark theme with your new palette
         return """
@@ -155,7 +154,7 @@ with st.sidebar:
         icons=["chat-dots", "question-circle", "journal-text"],
         default_index=0,
         styles={
-            "container": {"padding": "0!important"},
+            "container": {"padding": "0!important", "border-radius": "5px"},
             "icon": {"color": "var(--accent-color)", "font-size": "18px"}, 
             "nav-link": {
                 "font-size": "16px", 

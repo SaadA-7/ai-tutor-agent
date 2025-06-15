@@ -33,14 +33,14 @@
 /* Main sidebar container */
 section[data-testid="stSidebar"] {
     background-color: var(--sidebar-bg) !important;
-    border-right: 2px solid var(--border-color);
+    border-right: 3px solid var(--border-color);
     box-shadow: 4px 0 20px var(--shadow-color);
     transition: all 0.3s ease;
 }
 
 /* Sidebar content */
 section[data-testid="stSidebar"] > div {
-    background-color: var(--sidebar-bg) !important;
+    background-color:  var(--sidebar-bg) !important;
     color: var(--text-primary) !important;
     padding-top: 2rem;
 }
@@ -57,7 +57,7 @@ section[data-testid="stSidebar"] h3 {
 /* Theme selector styling */
 div[data-baseweb="radio"] label {
     color: var(--text-primary) !important;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 div[data-baseweb="radio"] {
@@ -75,7 +75,7 @@ div[data-baseweb="radio"] {
 input[type="text"], textarea {
     background-color: var(--input-bg) !important;
     color: var(--text-primary) !important;
-    border: 2px solid var(--input-border) !important;
+    border: 3px solid var(--input-border) !important;
     border-radius: 0.75rem !important;
     padding: 0.75rem 1rem !important;
     font-size: 1rem !important;
@@ -93,7 +93,7 @@ input[type="text"]:focus, textarea:focus {
 /* Form containers */
 div[data-testid="stForm"] {
     background-color: var(--form-bg) !important;
-    border: 2px solid var(--border-color) !important;
+    border: 3px solid var(--border-color) !important;
     border-radius: 1rem !important;
     padding: 2rem !important;
     box-shadow: 0 8px 24px var(--shadow-color);
@@ -118,7 +118,7 @@ button {
     border: none !important;
     border-radius: 0.75rem !important;
     font-weight: 600 !important;
-    padding: 0.875rem 1.75rem !important;
+    padding: 0.5rem 1rem 0.5rem !important;
     font-size: 1rem !important;
     cursor: pointer !important;
     transition: all 0.3s ease-in-out !important;
@@ -386,14 +386,15 @@ div[role="radiogroup"] {
 div[role="radiogroup"] label {
     background-color: var(--form-bg) !important;
     border: 2px solid var(--border-color) !important;
-    border-radius: 0.75rem !important;
-    padding: 1rem 1.25rem !important;
-    margin: 0.5rem 0 !important;
-    transition: all 0.3s ease !important;
-    cursor: pointer !important;
-    display: block !important;
+    border-radius: 999px !important;  /* pill shape */
+    padding: 0.75rem 1.5rem !important;
+    margin: 0.5rem !important;
+    font-size: 1rem !important;
     font-weight: 500 !important;
+    transition: all 0.3s ease;
+    display: inline-block !important;
 }
+
 
 div[role="radiogroup"] label:hover {
     border-color: var(--accent-color) !important;
@@ -781,4 +782,17 @@ button:focus {
     outline: 3px solid var(--accent-light);
     outline-offset: 2px;
 }
+
+/* Fix topic button overflow */
+button[key^="core_"], button[key^="more_"] {
+    white-space: nowrap;
+    padding: 0.75rem 1.25rem;
+    min-width: 100px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+
+
+
 
