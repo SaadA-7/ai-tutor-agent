@@ -753,3 +753,31 @@ button:hover::after {
         opacity: 1;
     }
 }
+
+/* version 1 post */
+
+/* ---------------------------------------
+   TOPIC BUTTON STYLING
+---------------------------------------- */
+
+button[key^="core_"], button[key^="more_"] {
+    background: var(--form-bg);
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(124, 58, 237, 0.15);
+}
+
+button[key^="core_"]:hover,
+button[key^="more_"]:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+button:focus {
+    outline: 3px solid var(--accent-light);
+    outline-offset: 2px;
+}

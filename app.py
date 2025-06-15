@@ -219,6 +219,56 @@ if selected_mode == "Q&A Chat":
     
     st.markdown("---")
 
+    # ---------------- TOPIC SELECTION UI ----------------
+
+    # Core and extended topics
+    core_topics = ["Math", "Science", "History", "Programming", "Trivia"]
+    more_topics = [
+        "Algebra", "Geometry", "Calculus", "Biology", "Chemistry",
+        "World History", "Java", "C", "Python", "Geography"
+    ]
+
+    # Initialize topic selection state
+    if "selected_topic" not in st.session_state:
+        st.session_state.selected_topic = core_topics[0]
+
+    if "show_more_topics" not in st.session_state:
+        st.session_state.show_more_topics = False
+
+    # Handle topic click
+    def select_topic(topic):
+        st.session_state.selected_topic = topic
+
+    # Render core topics row
+    st.markdown("#### 🎯 Select a Topic")
+    cols = st.columns(len(core_topics) + 1)
+    for i, topic in enumerate(core_topics):
+        with cols[i]:
+            if st.button(topic, key=f"core_{topic}", use_container_width=True):
+                select_topic(topic)
+
+    # + More Topics toggle
+    with cols[-1]:
+        if st.button("➕ More Topics", use_container_width=True):
+            st.session_state.show_more_topics = not st.session_state.show_more_topics
+
+    # Optional extended topics grid
+    if st.session_state.show_more_topics:
+        st.markdown("##### 📚 Extended Topics")
+        extended_rows = [more_topics[i:i+3] for i in range(0, len(more_topics), 3)]
+        for row in extended_rows:
+            cols = st.columns(len(row))
+            for i, topic in enumerate(row):
+                with cols[i]:
+                    if st.button(topic, key=f"more_{topic}", use_container_width=True):
+                        select_topic(topic)
+
+    # Display current selected topic
+    st.markdown(f"**Current Topic:** `{st.session_state.selected_topic}`")
+
+
+
+
     # Chat input form
     with st.form(key="chat_input_form", clear_on_submit=True):
         user_question = st.text_input(
@@ -239,27 +289,32 @@ if selected_mode == "Q&A Chat":
             "content": user_question.strip()
         })
 
-        # Generate AI response
+        # Generate AI response with topic-injected context
         with st.spinner("🤔 Tutor is thinking..."):
-            try:
-                ai_response = client.messages.create(
-                    model="claude-3-haiku-20240307",
-                    max_tokens=750,
-                    temperature=0.6,
-                    messages=[
-                        {"role": msg["role"], "content": msg["content"]} 
-                        for msg in st.session_state.messages
-                    ]
-                )
-                
-                tutor_answer = ai_response.content[0].text
-                st.session_state.messages.append({
-                    "role": "assistant", 
-                    "content": tutor_answer
-                })
-                
-            except Exception as e:
-                st.error(f"❌ Error generating response: {str(e)}")
+        try:
+        topic_context = f"You are a tutor helping with the subject: {st.session_state.selected_topic}."
+        messages = [
+            {"role": "system", "content": topic_context}
+        ] + [
+            {"role": msg["role"], "content": msg["content"]}
+            for msg in st.session_state.messages
+        ]
+        ai_response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=750,
+            temperature=0.6,
+            messages=messages
+        )
+        
+        tutor_answer = ai_response.content[0].text
+        st.session_state.messages.append({
+            "role": "assistant", 
+            "content": tutor_answer
+        })
+        
+    except Exception as e:
+        st.error(f"❌ Error generating response: {str(e)}")
+
 
     # Display conversation history
     if st.session_state.messages:
