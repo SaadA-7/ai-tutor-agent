@@ -62,48 +62,54 @@ def get_theme_variables(theme):
             --sidebar-bg: #f1f5f9;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
-            --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-light: #a5b4fc;
+            --warm-accent: #f59e0b;
+            --success-accent: #10b981;
             --input-bg: #ffffff;
             --input-border: #e2e8f0;
             --form-bg: #f8fafc;
-            --button-bg: #3b82f6;
-            --button-hover: #2563eb;
+            --button-bg: #6366f1;
+            --button-hover: #4f46e5;
             --button-text: #ffffff;
-            --user-bubble-bg: #dbeafe;
-            --user-bubble-text: #1e40af;
-            --tutor-bubble-bg: #dcfce7;
-            --tutor-bubble-text: #166534;
+            --user-bubble-bg: #ddd6fe;
+            --user-bubble-text: #5b21b6;
+            --tutor-bubble-bg: #d1fae5;
+            --tutor-bubble-text: #065f46;
             --success-color: #10b981;
             --error-color: #ef4444;
             --warning-color: #f59e0b;
             --border-color: #e2e8f0;
             --shadow-color: rgba(0, 0, 0, 0.1);
         """
-    else:  # dark theme
+    else:  # dark theme with your new palette
         return """
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --sidebar-bg: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --accent-color: #60a5fa;
-            --accent-hover: #3b82f6;
-            --input-bg: #1e293b;
-            --input-border: #475569;
-            --form-bg: #1e293b;
-            --button-bg: #3b82f6;
-            --button-hover: #2563eb;
-            --button-text: #ffffff;
-            --user-bubble-bg: #1e40af;
-            --user-bubble-text: #dbeafe;
-            --tutor-bubble-bg: #166534;
-            --tutor-bubble-text: #dcfce7;
+            --primary-bg: #222831;
+            --secondary-bg: #393E46;
+            --sidebar-bg: #393E46;
+            --text-primary: #DFD0B8;
+            --text-secondary: #948979;
+            --accent-color: #7c3aed;
+            --accent-hover: #6d28d9;
+            --accent-light: #a78bfa;
+            --warm-accent: #f59e0b;
+            --success-accent: #10b981;
+            --input-bg: #393E46;
+            --input-border: #948979;
+            --form-bg: #393E46;
+            --button-bg: #7c3aed;
+            --button-hover: #6d28d9;
+            --button-text: #DFD0B8;
+            --user-bubble-bg: #7c3aed;
+            --user-bubble-text: #DFD0B8;
+            --tutor-bubble-bg: #10b981;
+            --tutor-bubble-text: #DFD0B8;
             --success-color: #10b981;
             --error-color: #ef4444;
             --warning-color: #f59e0b;
-            --border-color: #475569;
-            --shadow-color: rgba(0, 0, 0, 0.3);
+            --border-color: #948979;
+            --shadow-color: rgba(34, 40, 49, 0.4);
         """
 
 # Apply theme styling
