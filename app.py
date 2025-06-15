@@ -1,8 +1,53 @@
 import os
+import re
 import streamlit as st
+import datetime
+import stripe
 from dotenv import load_dotenv
 from anthropic import Anthropic
 from streamlit_option_menu import option_menu
+from firebase_config import auth
+from firestore_config import db
+
+# Stripe integration
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+
+def create_checkout_session(user_email):
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            success_url="https://your-site.streamlit.app?session=success",
+            cancel_url="https://your-site.streamlit.app?session=cancel",
+            payment_method_types=["card"],
+            mode="payment",  # or "subscription" for monthly
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": "Tutor Pro Plan",
+                    },
+                    "unit_amount": 1500,  # $15 in cents
+                },
+                "quantity": 1,
+            }],
+            metadata={"email": user_email}
+        )
+        return checkout_session.url
+    except Exception as e:
+        st.error(f"⚠️ Failed to create checkout: {str(e)}")
+        return None
+
+
+# Save progress to Firestore
+def save_user_progress(email, data_type, data):
+    user_doc = db.collection("users").document(email)
+    user_doc.set({data_type: data}, merge=True)
+
+
+# Email Validation
+def is_valid_email(email):
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+
 
 # ============================================================================
 # INITIALIZATION & CONFIGURATION
@@ -118,20 +163,66 @@ apply_theme_styling()
 # SIDEBAR NAVIGATION & CONTROLS
 # ============================================================================
 
+
 with st.sidebar:
-    # User login section
     st.markdown("### 👤 User Login")
-    
-    username_input = st.text_input(
-        "Enter your name to start:", 
-        value=st.session_state.get("username", ""),
-        placeholder="Your name here..."
-    )
-    
-    if username_input:
-        st.session_state.username = username_input
-    
-    current_user = st.session_state.get("username", "Student")
+
+    # Check if user is already logged in
+    if "user" not in st.session_state:
+        st.session_state.user = None
+
+    if st.session_state.user is None:
+        st.markdown("### 🔐 Log In or Sign Up")
+
+        login_email = st.text_input("📧 Email")
+        login_password = st.text_input("🔑 Password", type="password")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔓 Log In"):
+                try:
+                    user = auth.sign_in_with_email_and_password(login_email, login_password)
+                    st.session_state.user = user
+                    st.success("✅ Logged in successfully!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Login failed: {str(e)}")
+
+        with col2:
+            if st.button("📝 Sign Up"):
+                if not is_valid_email(login_email):
+                 st.error("❌ Please enter a valid email address.")
+            else:
+                try:
+                    user = auth.create_user_with_email_and_password(login_email, login_password)
+                    st.session_state.user = user
+                    st.success("🎉 Account created. You can now log in.")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Sign-up failed: {str(e)}")
+
+
+        st.stop()  # Prevent app from loading if not logged in
+    else:
+        # Display user's email if logged in
+        user_email = st.session_state.user['email']
+        st.success(f"👋 Logged in as: {user_email}")
+        current_user = user_email
+
+        # Load previous user progress
+        user_doc = db.collection("users").document(user_email).get()
+        if user_doc.exists:
+            user_data = user_doc.to_dict()
+            st.session_state.quiz_score = user_data.get("quiz_score", {"correct": 0, "total": 0})
+            st.session_state.flashcard_score = user_data.get("flashcard_score", {"got_it": 0, "missed": 0})
+
+
+        # 🔓 Logout Button
+        if st.button("🚪 Log Out", use_container_width=True):
+            st.session_state.user = None
+            st.success("✅ You have been logged out.")
+            st.rerun()
+
     
     # Progress reset button
     if st.button("🔄 Reset Progress", use_container_width=True):
@@ -203,18 +294,74 @@ if "quiz_score" not in st.session_state:
 if "flashcard_score" not in st.session_state:
     st.session_state.flashcard_score = {"got_it": 0, "missed": 0}
 
-# Initialize usage limits
+# get today's date as a string
+def get_today_str():
+    return datetime.datetime.now().strftime("%Y-%m-%d")
+
+# Load or initialize usage tracking
 if "usage" not in st.session_state:
     st.session_state.usage = {
         "qa_count": 0,
         "quiz_count": 0,
         "flashcard_count": 0,
-        "limit_hit": {
-            "qa": False,
-            "quiz": False,
-            "flashcard": False
-        }
+        "last_reset": get_today_str(),
+        "limit_hit": {"qa": False, "quiz": False, "flashcard": False}
     }
+
+# Reset usage if it's a new day
+today_str = get_today_str()
+if st.session_state.usage.get("last_reset") != today_str:
+    st.session_state.usage.update({
+        "qa_count": 0,
+        "quiz_count": 0,
+        "flashcard_count": 0,
+        "last_reset": today_str,
+        "limit_hit": {"qa": False, "quiz": False, "flashcard": False}
+    })
+
+# Load usage from Firestore (once, after login)
+if current_user and "usage_loaded" not in st.session_state:
+    user_doc = db.collection("users").document(current_user).get()
+    if user_doc.exists:
+        usage_data = user_doc.to_dict().get("daily_usage", {})
+        if usage_data.get("last_reset") == today_str:
+            st.session_state.usage.update(usage_data)
+    st.session_state.usage_loaded = True
+
+# Persist usage back to Firestore when modified
+def save_usage():
+    if current_user:
+        db.collection("users").document(current_user).set(
+            {"daily_usage": st.session_state.usage}, merge=True
+        )
+
+def show_upgrade_modal(mode):
+    # Create a Stripe Checkout URL based on logged-in user email
+    upgrade_url = create_checkout_session(current_user)
+
+    st.markdown(f"""
+    <div style="background-color: var(--form-bg); padding: 2rem; border: 2px solid var(--accent-color); border-radius: 1rem; box-shadow: 0 4px 8px var(--shadow-color); margin: 2rem 0;">
+        <h2 style="color: var(--text-primary);">🚀 Upgrade to Tutor Pro</h2>
+        <p style="color: var(--text-secondary);">
+            You've reached the daily limit for <strong>{mode}</strong> mode.<br>
+            Upgrade to Tutor Pro for:
+        </p>
+        <ul style="color: var(--text-secondary);">
+            <li>✅ Unlimited {mode} access</li>
+            <li>✅ Full progress tracking</li>
+            <li>✅ Premium topics & smart review</li>
+            <li>✅ Bonus: early access to mobile app</li>
+        </ul>
+        {"<a href='" + upgrade_url + "' target='_blank'>" if upgrade_url else ""}
+            <button style="background-color: var(--button-bg); color: var(--button-text); padding: 0.8rem 1.5rem; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer;">
+                🔓 Upgrade Now
+            </button>
+        {"</a>" if upgrade_url else ""}
+    </div>
+    """, unsafe_allow_html=True)
+
+
+
 
 # Define daily free usage caps
 DAILY_LIMITS = {
@@ -319,9 +466,11 @@ if selected_mode == "Q&A Chat":
     # Process user input
     if st.session_state.usage["qa_count"] >= DAILY_LIMITS["qa"]:
         st.session_state.usage["limit_hit"]["qa"] = True
-        st.warning("🚫 Daily Q&A limit reached (5 per day). Please upgrade for unlimited access!")
+        show_upgrade_modal("Q&A")
     elif submit_question and user_question.strip():
         st.session_state.usage["qa_count"] += 1
+        save_usage()
+
 
         # Add user message to conversation
         st.session_state.messages.append({
@@ -334,17 +483,17 @@ if selected_mode == "Q&A Chat":
             try:
                 topic_context = f"You are a tutor helping with the subject: {st.session_state.selected_topic}."
                 messages = [
-                    {"role": "system", "content": topic_context}
-                ] + [
                     {"role": msg["role"], "content": msg["content"]}
                     for msg in st.session_state.messages
                 ]
                 ai_response = client.messages.create(
                     model="claude-3-haiku-20240307",
+                    system=topic_context,
                     max_tokens=750,
                     temperature=0.6,
                     messages=messages
                 )
+
 
                 tutor_answer = ai_response.content[0].text
                 st.session_state.messages.append({
@@ -448,9 +597,11 @@ elif selected_mode == "Quiz Mode":
     with col2:
         if st.session_state.usage["quiz_count"] >= DAILY_LIMITS["quiz"]:
             st.session_state.usage["limit_hit"]["quiz"] = True
-            st.warning("🚫 Daily quiz limit reached (3 per day). Please upgrade for unlimited quizzes!")
+            show_upgrade_modal("Quiz")
         elif st.button("🎲 Generate New Question", use_container_width=True):
             st.session_state.usage["quiz_count"] += 1
+            save_usage()
+
 
             selected_quiz_topic = st.session_state.quiz_selected_topic
             quiz_prompt = (
@@ -532,11 +683,18 @@ elif selected_mode == "Quiz Mode":
                         
                         if user_selection == correct_answer:
                             st.session_state.quiz_score["correct"] += 1
+
+                            # Save updated quiz score
+                            save_user_progress(current_user, "quiz_score", st.session_state.quiz_score)
+
+
+
                             st.success(f"🎉 Correct! Well done!")
                             if explanation:
                                 st.info(f"💡 **Explanation:** {explanation}")
                         else:
                             st.error(f"❌ Incorrect. The correct answer was **{correct_answer}**: {quiz_options.get(correct_answer, 'N/A')}")
+                            save_user_progress(current_user, "quiz_score", st.session_state.quiz_score)
                             if explanation:
                                 st.info(f"💡 **Explanation:** {explanation}")
                         
@@ -639,9 +797,11 @@ elif selected_mode == "Flashcards":
     with col2:
         if st.session_state.usage["flashcard_count"] >= DAILY_LIMITS["flashcard"]:
             st.session_state.usage["limit_hit"]["flashcard"] = True
-            st.warning("🚫 Daily flashcard limit reached (5 per day). Please upgrade to continue studying!")
+            show_upgrade_modal("Flashcards")
         elif st.button("🔄 New Flashcard", use_container_width=True):
             st.session_state.usage["flashcard_count"] += 1
+            save_usage()
+
 
             flashcard_prompt = (
                 "Create an educational flashcard for a student studying computer science, "
@@ -716,6 +876,7 @@ elif selected_mode == "Flashcards":
                     with col1:
                         if st.button("✅ Got it right!", use_container_width=True):
                             st.session_state.flashcard_score["got_it"] += 1
+                            save_user_progress(current_user, "flashcard_score", st.session_state.flashcard_score)
                             st.success("Great job! 🎉")
                             st.session_state.current_flashcard_data = None
                             st.session_state.show_flashcard_answer = False
@@ -723,6 +884,7 @@ elif selected_mode == "Flashcards":
                     with col2:
                         if st.button("❌ Need more practice", use_container_width=True):
                             st.session_state.flashcard_score["missed"] += 1
+                            save_user_progress(current_user, "flashcard_score", st.session_state.flashcard_score)                   
                             st.info("No worries, keep studying! 📚")
                             st.session_state.current_flashcard_data = None
                             st.session_state.show_flashcard_answer = False
