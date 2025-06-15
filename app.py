@@ -203,6 +203,27 @@ if "quiz_score" not in st.session_state:
 if "flashcard_score" not in st.session_state:
     st.session_state.flashcard_score = {"got_it": 0, "missed": 0}
 
+# Initialize usage limits
+if "usage" not in st.session_state:
+    st.session_state.usage = {
+        "qa_count": 0,
+        "quiz_count": 0,
+        "flashcard_count": 0,
+        "limit_hit": {
+            "qa": False,
+            "quiz": False,
+            "flashcard": False
+        }
+    }
+
+# Define daily free usage caps
+DAILY_LIMITS = {
+    "qa": 5,
+    "quiz": 3,
+    "flashcard": 5
+}
+
+
 # ============================================================================
 # Q&A CHAT MODE
 # ============================================================================
@@ -296,7 +317,12 @@ if selected_mode == "Q&A Chat":
             submit_question = st.form_submit_button("🚀 Ask Tutor", use_container_width=True)
 
     # Process user input
-    if submit_question and user_question.strip():
+    if st.session_state.usage["qa_count"] >= DAILY_LIMITS["qa"]:
+        st.session_state.usage["limit_hit"]["qa"] = True
+        st.warning("🚫 Daily Q&A limit reached (5 per day). Please upgrade for unlimited access!")
+    elif submit_question and user_question.strip():
+        st.session_state.usage["qa_count"] += 1
+
         # Add user message to conversation
         st.session_state.messages.append({
             "role": "user", 
@@ -420,7 +446,12 @@ elif selected_mode == "Quiz Mode":
     # Quiz generation controls
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🎲 Generate New Question", use_container_width=True):
+        if st.session_state.usage["quiz_count"] >= DAILY_LIMITS["quiz"]:
+            st.session_state.usage["limit_hit"]["quiz"] = True
+            st.warning("🚫 Daily quiz limit reached (3 per day). Please upgrade for unlimited quizzes!")
+        elif st.button("🎲 Generate New Question", use_container_width=True):
+            st.session_state.usage["quiz_count"] += 1
+
             selected_quiz_topic = st.session_state.quiz_selected_topic
             quiz_prompt = (
                 f"Create a multiple choice quiz question on the topic of '{selected_quiz_topic}'. "
@@ -606,7 +637,12 @@ elif selected_mode == "Flashcards":
     # Flashcard generation
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🔄 New Flashcard", use_container_width=True):
+        if st.session_state.usage["flashcard_count"] >= DAILY_LIMITS["flashcard"]:
+            st.session_state.usage["limit_hit"]["flashcard"] = True
+            st.warning("🚫 Daily flashcard limit reached (5 per day). Please upgrade to continue studying!")
+        elif st.button("🔄 New Flashcard", use_container_width=True):
+            st.session_state.usage["flashcard_count"] += 1
+
             flashcard_prompt = (
                 "Create an educational flashcard for a student studying computer science, "
                 "mathematics, or general academic subjects. "
