@@ -223,9 +223,11 @@ if selected_mode == "Q&A Chat":
     # Core and extended topics
     core_topics = ["Math", "Science", "History", "Programming", "Trivia"]
     more_topics = [
-        "Algebra", "Geometry", "Calculus", "Biology", "Chemistry",
-        "World History", "Java", "C", "Python", "Geography"
+    "Algebra", "Geometry", "Calculus", "Biology", "Chemistry",
+    "World History", "Java", "C", "Python", "Geography",
+    "Data Structures and Algorithms"
     ]
+
 
     # Initialize topic selection state
     if "selected_topic" not in st.session_state:
@@ -251,6 +253,8 @@ if selected_mode == "Q&A Chat":
         if st.button("➕ More Topics", use_container_width=True):
             st.session_state.show_more_topics = not st.session_state.show_more_topics
 
+    
+
     # Optional extended topics grid
     if st.session_state.show_more_topics:
         st.markdown("##### 📚 Extended Topics")
@@ -264,6 +268,17 @@ if selected_mode == "Q&A Chat":
 
     # Display current selected topic
     st.markdown(f"**Current Topic:** `{st.session_state.selected_topic}`")
+    # ✍️ Optional: Enter custom topic
+    if "show_custom_topic" not in st.session_state:
+        st.session_state.show_custom_topic = False
+
+    if st.button("✍️ Or enter your own topic", use_container_width=True):
+        st.session_state.show_custom_topic = not st.session_state.show_custom_topic
+
+    if st.session_state.show_custom_topic:
+        custom_topic = st.text_input("Enter a custom topic:", key="custom_topic_input")
+        if custom_topic:
+            st.session_state.selected_topic = custom_topic
 
 
 
@@ -348,6 +363,55 @@ elif selected_mode == "Quiz Mode":
     """, unsafe_allow_html=True)
     
     st.markdown("---")
+    # ---------------- EXPANDABLE QUIZ TOPIC SELECTOR ----------------
+    st.markdown("#### 🎯 Select a Quiz Topic")
+
+    core_quiz_topics = ["General", "Math", "Science", "History", "Programming"]
+    more_quiz_topics = ["Data Structures and Algorithms", "Java", "C", "Algebra", "Calculus", "Geography", "World History"]
+
+    if "quiz_selected_topic" not in st.session_state:
+        st.session_state.quiz_selected_topic = core_quiz_topics[0]
+
+    if "quiz_show_more_topics" not in st.session_state:
+        st.session_state.quiz_show_more_topics = False
+
+    def select_quiz_topic(topic):
+        st.session_state.quiz_selected_topic = topic
+
+    quiz_cols = st.columns(len(core_quiz_topics) + 1)
+    for i, topic in enumerate(core_quiz_topics):
+        with quiz_cols[i]:
+            if st.button(topic, key=f"quiz_core_{topic}", use_container_width=True):
+                select_quiz_topic(topic)
+
+    with quiz_cols[-1]:
+        if st.button("➕ More Topics", key="quiz_more_toggle", use_container_width=True):
+            st.session_state.quiz_show_more_topics = not st.session_state.quiz_show_more_topics
+
+    if st.session_state.quiz_show_more_topics:
+        st.markdown("##### 📚 Extended Quiz Topics")
+        extra_rows = [more_quiz_topics[i:i+3] for i in range(0, len(more_quiz_topics), 3)]
+        for row in extra_rows:
+            row_cols = st.columns(len(row))
+            for i, topic in enumerate(row):
+                with row_cols[i]:
+                    if st.button(topic, key=f"quiz_more_{topic}", use_container_width=True):
+                        select_quiz_topic(topic)
+
+    st.markdown(f"**Current Quiz Topic:** `{st.session_state.quiz_selected_topic}`")
+    # ✍️ Optional: Enter custom quiz topic
+    if "quiz_show_custom_topic" not in st.session_state:
+        st.session_state.quiz_show_custom_topic = False
+
+    if st.button("✍️ Or enter your own quiz topic", use_container_width=True):
+        st.session_state.quiz_show_custom_topic = not st.session_state.quiz_show_custom_topic
+
+    if st.session_state.quiz_show_custom_topic:
+        custom_quiz_topic = st.text_input("Enter a custom quiz topic:", key="custom_quiz_topic_input")
+        if custom_quiz_topic:
+            st.session_state.quiz_selected_topic = custom_quiz_topic
+
+
 
     # Initialize quiz state
     if "current_quiz_data" not in st.session_state:
@@ -357,9 +421,10 @@ elif selected_mode == "Quiz Mode":
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("🎲 Generate New Question", use_container_width=True):
+            selected_quiz_topic = st.session_state.quiz_selected_topic
             quiz_prompt = (
-                "Create a multiple choice quiz question on a computer science, mathematics, "
-                "or general academic topic suitable for students. "
+                f"Create a multiple choice quiz question on the topic of '{selected_quiz_topic}'. "
+                "It should be suitable for students and formatted exactly as:\n\n"
                 "Format your response EXACTLY as follows:\n\n"
                 "**Question:** [Your question here]\n"
                 "**A.** [Option A]\n"
@@ -482,6 +547,55 @@ elif selected_mode == "Flashcards":
     """, unsafe_allow_html=True)
     
     st.markdown("---")
+
+    # ---------------- FLASHCARD TOPIC SELECTION ----------------
+    st.markdown("#### 🎯 Select a Flashcard Topic")
+
+    core_flash_topics = ["General", "Math", "Science", "History", "Programming"]
+    more_flash_topics = ["Data Structures and Algorithms", "Java", "C", "Algebra", "Calculus", "Geography", "World History"]
+
+    if "flashcard_selected_topic" not in st.session_state:
+        st.session_state.flashcard_selected_topic = core_flash_topics[0]
+
+    if "flashcard_show_more_topics" not in st.session_state:
+        st.session_state.flashcard_show_more_topics = False
+
+    def select_flashcard_topic(topic):
+        st.session_state.flashcard_selected_topic = topic
+
+    flash_cols = st.columns(len(core_flash_topics) + 1)
+    for i, topic in enumerate(core_flash_topics):
+        with flash_cols[i]:
+            if st.button(topic, key=f"flash_core_{topic}", use_container_width=True):
+                select_flashcard_topic(topic)
+
+    with flash_cols[-1]:
+        if st.button("➕ More Topics", key="flash_more_toggle", use_container_width=True):
+            st.session_state.flashcard_show_more_topics = not st.session_state.flashcard_show_more_topics
+
+    if st.session_state.flashcard_show_more_topics:
+        st.markdown("##### 📚 Extended Flashcard Topics")
+        extra_rows = [more_flash_topics[i:i+3] for i in range(0, len(more_flash_topics), 3)]
+        for row in extra_rows:
+            row_cols = st.columns(len(row))
+            for i, topic in enumerate(row):
+                with row_cols[i]:
+                    if st.button(topic, key=f"flash_more_{topic}", use_container_width=True):
+                        select_flashcard_topic(topic)
+
+    st.markdown(f"**Current Flashcard Topic:** `{st.session_state.flashcard_selected_topic}`")
+    # ✍️ Optional: Enter custom flashcard topic
+    if "flashcard_show_custom_topic" not in st.session_state:
+        st.session_state.flashcard_show_custom_topic = False
+
+    if st.button("✍️ Or enter your own flashcard topic", use_container_width=True):
+        st.session_state.flashcard_show_custom_topic = not st.session_state.flashcard_show_custom_topic
+
+    if st.session_state.flashcard_show_custom_topic:
+        custom_flashcard_topic = st.text_input("Enter a custom flashcard topic:", key="custom_flashcard_topic_input")
+        if custom_flashcard_topic:
+            st.session_state.flashcard_selected_topic = custom_flashcard_topic
+
 
     # Initialize flashcard state
     if "current_flashcard_data" not in st.session_state:
