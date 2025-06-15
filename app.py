@@ -291,7 +291,7 @@ if selected_mode == "Q&A Chat":
 
         # Generate AI response with topic-injected context
         with st.spinner("🤔 Tutor is thinking..."):
-        try:
+            try:
         topic_context = f"You are a tutor helping with the subject: {st.session_state.selected_topic}."
         messages = [
             {"role": "system", "content": topic_context}
