@@ -85,7 +85,7 @@ input[type="text"], textarea {
 
 input[type="text"]:focus, textarea:focus {
     border-color: var(--accent-color) !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    box-shadow: 0 0 0 3px var(--accent-glow) !important;
     outline: none !important;
 }
 
@@ -156,10 +156,11 @@ button[kind="secondary"]:hover {
     text-align: center;
     margin-bottom: 2rem;
     padding: 2rem 1rem;
-    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
     border-radius: 1rem;
     color: white;
     box-shadow: 0 6px 20px var(--shadow-color);
+    border: 1px solid var(--accent-tertiary);
 }
 
 .page-header h1 {
@@ -184,7 +185,7 @@ button[kind="secondary"]:hover {
     margin: 0.75rem 0 0.75rem auto;
     max-width: 80%;
     box-shadow: 0 3px 12px var(--shadow-color);
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid var(--accent-tertiary);
 }
 
 .tutor-message-bubble {
@@ -195,7 +196,7 @@ button[kind="secondary"]:hover {
     margin: 0.75rem auto 0.75rem 0;
     max-width: 80%;
     box-shadow: 0 3px 12px var(--shadow-color);
-    border-left: 4px solid var(--success-color);
+    border-left: 4px solid var(--accent-secondary);
 }
 
 .user-message-bubble strong,
@@ -217,7 +218,7 @@ button[kind="secondary"]:hover {
 }
 
 .quiz-question-container h3 {
-    color: var(--accent-color);
+    color: var(--accent-tertiary);
     font-weight: 600;
     margin-bottom: 1rem;
 }
@@ -246,7 +247,7 @@ button[kind="secondary"]:hover {
 
 .flashcard-question h3,
 .flashcard-answer h3 {
-    color: var(--accent-color);
+    color: var(--accent-tertiary);
     font-weight: 600;
     margin-bottom: 1rem;
     font-size: 1.25rem;
@@ -353,7 +354,7 @@ div[data-testid="stInfo"] {
     border-radius: 0.75rem !important;
     padding: 1rem 1.25rem !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
 
 /* Warning messages */
@@ -404,35 +405,96 @@ div[data-testid="stSpinner"] {
 }
 
 /* ----------------------------------------------------------------------------
-   DARK MODE ENHANCEMENTS
+   ENHANCED DARK MODE WITH NEW COLOR PALETTE
    ---------------------------------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
     .stApp {
-        /* Enhanced dark mode support for system preferences */
+        /* New sophisticated dark mode palette */
         --primary-bg: #222831;
         --secondary-bg: #393E46;
-        --sidebar-bg: #334155;
-        --text-primary: #f8fafc;
-        --text-secondary: #cbd5e1;
-        --accent-color: #60a5fa;
-        --accent-hover: #3b82f6;
-        --input-bg: #1e293b;
-        --input-border: #475569;
-        --form-bg: #1e293b;
-        --button-bg: #3b82f6;
-        --button-hover: #2563eb;
-        --button-text: #ffffff;
-        --user-bubble-bg: #1e40af;
-        --user-bubble-text: #dbeafe;
-        --tutor-bubble-bg: #166534;
-        --tutor-bubble-text: #dcfce7;
-        --success-color: #10b981;
-        --error-color: #ef4444;
-        --warning-color: #f59e0b;
-        --border-color: #DFD0B8;
-        --shadow-color: rgba(0, 0, 0, 0.3);
+        --sidebar-bg: #2A3139;
+        --text-primary: #DFD0B8;
+        --text-secondary: #948979;
+        --accent-color: #8B7D6B;
+        --accent-secondary: #948979;
+        --accent-tertiary: #DFD0B8;
+        --accent-hover: #A0927E;
+        --accent-glow: rgba(139, 125, 107, 0.3);
+        --input-bg: #393E46;
+        --input-border: #4A5258;
+        --form-bg: #2F353C;
+        --button-bg: #8B7D6B;
+        --button-hover: #A0927E;
+        --button-text: #222831;
+        --user-bubble-bg: #4A5258;
+        --user-bubble-text: #DFD0B8;
+        --tutor-bubble-bg: #393E46;
+        --tutor-bubble-text: #DFD0B8;
+        --success-color: #7C8471;
+        --error-color: #B85450;
+        --warning-color: #C4975A;
+        --border-color: #4A5258;
+        --shadow-color: rgba(0, 0, 0, 0.4);
     }
+}
+
+/* Force dark theme variables when dark mode is selected */
+.stApp[data-theme="dark"] {
+    --primary-bg: #222831;
+    --secondary-bg: #393E46;
+    --sidebar-bg: #2A3139;
+    --text-primary: #DFD0B8;
+    --text-secondary: #948979;
+    --accent-color: #8B7D6B;
+    --accent-secondary: #948979;
+    --accent-tertiary: #DFD0B8;
+    --accent-hover: #A0927E;
+    --accent-glow: rgba(139, 125, 107, 0.3);
+    --input-bg: #393E46;
+    --input-border: #4A5258;
+    --form-bg: #2F353C;
+    --button-bg: #8B7D6B;
+    --button-hover: #A0927E;
+    --button-text: #222831;
+    --user-bubble-bg: #4A5258;
+    --user-bubble-text: #DFD0B8;
+    --tutor-bubble-bg: #393E46;
+    --tutor-bubble-text: #DFD0B8;
+    --success-color: #7C8471;
+    --error-color: #B85450;
+    --warning-color: #C4975A;
+    --border-color: #4A5258;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Light theme variables */
+.stApp[data-theme="light"] {
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8fafc;
+    --sidebar-bg: #f1f5f9;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent-color: #3b82f6;
+    --accent-secondary: #60a5fa;
+    --accent-tertiary: #2563eb;
+    --accent-hover: #2563eb;
+    --accent-glow: rgba(59, 130, 246, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #e2e8f0;
+    --form-bg: #f8fafc;
+    --button-bg: #3b82f6;
+    --button-hover: #2563eb;
+    --button-text: #ffffff;
+    --user-bubble-bg: #dbeafe;
+    --user-bubble-text: #1e40af;
+    --tutor-bubble-bg: #dcfce7;
+    --tutor-bubble-text: #166534;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 /* ----------------------------------------------------------------------------
@@ -458,7 +520,7 @@ div[data-testid="stSpinner"] {
 /* High contrast mode support */
 @media (prefers-contrast: high) {
     .stApp {
-        --border-color: #000000;
+        --border-color: var(--text-primary);
         --shadow-color: rgba(0, 0, 0, 0.8);
     }
     
