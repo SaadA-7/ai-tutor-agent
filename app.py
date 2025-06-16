@@ -8,6 +8,16 @@ from anthropic import Anthropic
 from streamlit_option_menu import option_menu
 from firebase_config import auth
 from firestore_config import db
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+# only initialize the default app if it hasn’t been already
+if not firebase_admin._apps:
+    cred = credentials.Certificate("firebase-service-account.json")
+    firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
 
 # Stripe integration
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
@@ -206,8 +216,25 @@ with st.sidebar:
     else:
         # Display user's email if logged in
         user_email = st.session_state.user['email']
+        current_user = user_email
+
         st.success(f"👋 Logged in as: {user_email}")
         current_user = user_email
+
+        # 🔐 Check if user is Pro
+        user_doc = db.collection("users").document(user_email).get()
+        if user_doc.exists:
+            user_data = user_doc.to_dict()
+            st.session_state.is_pro = user_data.get("pro", False)
+        else:
+            st.session_state.is_pro = False
+
+        # Show Pro status
+        if st.session_state.is_pro:
+            st.success("🌟 You are a Tutor Pro member!")
+        else:
+            st.info("🔓 Free tier (daily limits apply)")
+
 
         # Load previous user progress
         user_doc = db.collection("users").document(user_email).get()
@@ -464,7 +491,7 @@ if selected_mode == "Q&A Chat":
             submit_question = st.form_submit_button("🚀 Ask Tutor", use_container_width=True)
 
     # Process user input
-    if st.session_state.usage["qa_count"] >= DAILY_LIMITS["qa"]:
+    if not st.session_state.is_pro and st.session_state.usage["qa_count"] >= DAILY_LIMITS["qa"]:
         st.session_state.usage["limit_hit"]["qa"] = True
         show_upgrade_modal("Q&A")
     elif submit_question and user_question.strip():
@@ -595,7 +622,7 @@ elif selected_mode == "Quiz Mode":
     # Quiz generation controls
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.session_state.usage["quiz_count"] >= DAILY_LIMITS["quiz"]:
+        if not st.session_state.is_pro and st.session_state.usage["quiz_count"] >= DAILY_LIMITS["quiz"]:
             st.session_state.usage["limit_hit"]["quiz"] = True
             show_upgrade_modal("Quiz")
         elif st.button("🎲 Generate New Question", use_container_width=True):
@@ -795,7 +822,7 @@ elif selected_mode == "Flashcards":
     # Flashcard generation
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.session_state.usage["flashcard_count"] >= DAILY_LIMITS["flashcard"]:
+        if not st.session_state.is_pro and st.session_state.usage["flashcard_count"] >= DAILY_LIMITS["flashcard"]:
             st.session_state.usage["limit_hit"]["flashcard"] = True
             show_upgrade_modal("Flashcards")
         elif st.button("🔄 New Flashcard", use_container_width=True):

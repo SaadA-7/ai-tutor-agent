@@ -2,3 +2,8 @@ venv/
 .env
 __pycache__/
 firebase_key.json
+*.pyc
+firebase-service-account.json
+functions/node_modules/
+.streamlit/secrets.toml
+
