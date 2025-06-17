@@ -67,3 +67,5 @@ tzdata==2025.2
 urllib3==1.26.20
 watchdog==6.0.0
 stripe
+firebase-admin==6.5.0
+plotly==5.22.0
