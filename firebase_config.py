@@ -1,14 +1,10 @@
-import pyrebase
+import firebase_admin
+from firebase_admin import auth as admin_auth, credentials
 
-firebase_config = {
-    "apiKey": "AIzaSyAJGJmTnkc7ybIEOFTfFXtONUCGK99gEUs",
-    "authDomain": "ai-tutor-agent-v1.firebaseapp.com",
-    "databaseURL": "",
-    "projectId": "ai-tutor-agent-v1",
-    "storageBucket": "ai-tutor-agent-v1.appspot.com",
-    "messagingSenderId": "36461042628",
-    "appId": "1:36461042628:web:6a6051217d94d88f9ee291",
-}
+# Initialize Firebase only once
+if not firebase_admin._apps:
+    cred = credentials.Certificate("firebase-service-account.json")
+    firebase_admin.initialize_app(cred)
 
-firebase = pyrebase.initialize_app(firebase_config)
-auth = firebase.auth()
+# Export 'auth' so the rest of your app can use: from firebase_config import auth
+auth = admin_auth

@@ -3,12 +3,12 @@ import re
 import streamlit as st
 import datetime
 import stripe
+import firebase_admin
 from dotenv import load_dotenv
 from anthropic import Anthropic
 from streamlit_option_menu import option_menu
 from firebase_config import auth
 from firestore_config import db
-import firebase_admin
 from firebase_admin import credentials, firestore
 
 # only initialize the default app if it hasn’t been already
