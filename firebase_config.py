@@ -1,10 +1,13 @@
+import os
+import json
 import firebase_admin
 from firebase_admin import auth as admin_auth, credentials
 
-# Initialize Firebase only once
+# Load Firebase service account from Streamlit Cloud secret
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase-service-account.json")
+    service_account_info = json.loads(os.environ["firebase_service_account"])
+    cred = credentials.Certificate(service_account_info)
     firebase_admin.initialize_app(cred)
 
-# Export 'auth' so the rest of your app can use: from firebase_config import auth
+# Export the Firebase auth module
 auth = admin_auth
