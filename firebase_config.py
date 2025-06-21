@@ -7,7 +7,7 @@ import pyrebase
 
 # Load Firebase credentials from Streamlit secrets or local file
 if "firebase_service_account" in st.secrets:
-    service_account_info = json.loads(st.secrets["firebase_service_account"])
+    service_account_info = dict(st.secrets["firebase_service_account"])
     admin_cred = credentials.Certificate(service_account_info)
 else:
     with open("firebase-service-account.json") as f:
