@@ -175,14 +175,14 @@ apply_theme_styling()
 
 
 with st.sidebar:
-    st.markdown("### 👤 User Login")
+    st.markdown("### 👤 MentoraAi, your personal tutor")
 
     # Check if user is already logged in
     if "user" not in st.session_state:
         st.session_state.user = None
 
     if st.session_state.user is None:
-        st.markdown("### 🔐 Log In or Sign Up")
+        st.markdown("### 🔐 Log In or Sign Up Below")
 
         login_email = st.text_input("📧 Email")
         login_password = st.text_input("🔑 Password", type="password")
