@@ -416,10 +416,10 @@ if selected_mode == "Q&A Chat":
     # ---------------- TOPIC SELECTION UI ----------------
 
     # Core and extended topics
-    core_topics = ["Math", "Science", "History", "Programming", "Trivia"]
+    core_topics = ["Math", "Science", "History", "Java", "Trivia"]
     more_topics = [
     "Algebra", "Geometry", "Calculus", "Biology", "Chemistry",
-    "World History", "Java", "C", "Python", "Geography",
+    "World History", "Programming", "C", "Python", "Geography",
     "Data Structures and Algorithms"
     ]
 
